@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+        .row.content {
+            height: 450px
+        }
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+        @media screen and (max-width: 767px) {
+            .row.content {
+                height: auto;
+            }
+        }
+        table{
+            border-collapse: collapse;
+        }
+
+        table th, table td{
+            padding: 5px;
+        }
+    </style>
+    <title>Library webapp</title>
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/index">Welcome</a></li>
+                <li class="active"><a href="/bookTable">Table of books</a></li>
+                <li class="active"><a href="/addBook">Add book</a></li>
+                <li class="active"><a href="/authorTable">Table of Authors</a></li>
+                <li class="active"><a href="/addAuthor">Add Author</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br/>
+<div>
+    <table border="1">
+        <tr>
+            <th>Id</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Books</th>
+        </tr>
+        <tr th:each="author : ${authors}">
+            <td th:utext="${author.id}">...</td>
+            <td th:utext="${author.firstName}">...</td>
+            <td th:utext="${author.lastName}">...</td>
+            <td><a href="bookTable.html" th:utext="${author.book}">... </a></td>
+        </tr>
+    </table>
+</div>
+</div>
+</body>
+</html>
