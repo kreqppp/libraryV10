@@ -3,6 +3,7 @@ package com.kreqppp.demo.controllers;
 import com.kreqppp.demo.model.Book;
 import com.kreqppp.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +24,8 @@ public class BookController {
         books.add(new Book("Kobzar","Taras Shevchenko","Poetyca",1840));
     }*/
 
+    @Value("${error.message}")
+    private String errorMessage;
 
     @RequestMapping(value = {"/","/index"}, method = RequestMethod.GET)
     public String welcome(){
@@ -42,14 +45,18 @@ public class BookController {
     }
 
     @RequestMapping(value = "/addBook/submit", method = RequestMethod.POST)
-    public String submitBook(@ModelAttribute("book") Book book) {
-        try {
-            this.bookService.save(book);
+    public String submitBook(Model model, @ModelAttribute("book") Book book) {
+        if(!book.getTitle().isEmpty()) {
+            if (!book.getAuthor().isEmpty())
+                if (!book.getGenre().isEmpty())
+                    if (book.getYearOfPublication() >= 0) {
+                        this.bookService.save(book);
+                        return "redirect:../bookTable";
+                    }
         }
-        catch (Exception e){
-            System.out.println(e);
-        }
-        return "redirect:../bookTable";
+        model.addAttribute("errorMessage", errorMessage);
+        return "addBook";
+
     }
 
 

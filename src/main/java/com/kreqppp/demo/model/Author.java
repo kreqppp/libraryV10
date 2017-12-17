@@ -6,21 +6,20 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "authors")
 public class Author implements Comparable<Author>{
 
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column
+    @GeneratedValue
     private int id;
 
-    @Column(name = "FIRSTNAME")
+    @Column
     private String firstName;
 
-    @Column(name = "LASTNAME")
+    @Column
     private String lastName;
 
-    @Column(name = "BOOKS")
+    @Column
     private String book;
 
     public Author() {

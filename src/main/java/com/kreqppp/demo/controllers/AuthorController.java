@@ -3,6 +3,7 @@ package com.kreqppp.demo.controllers;
 import com.kreqppp.demo.model.Author;
 import com.kreqppp.demo.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,6 +26,9 @@ public class AuthorController {
         authors.add(new Author("Taras","Shevchenko","Kobzar"));
     }*/
 
+    @Value("${error.message}")
+    private String errorMessage;
+
     @RequestMapping(value = {"/authorTable"}, method = RequestMethod.GET)
     public String authorTable(Model model){
         model.addAttribute("authors", authorService.getAll());
@@ -38,9 +42,16 @@ public class AuthorController {
     }
 
     @RequestMapping(value = "/addAuthor/submit", method = RequestMethod.POST)
-    public String submitAuthor(@ModelAttribute Author author) {
-        authorService.save(author);
-        return "redirect:../authorTable";
+    public String submitAuthor(Model model, @ModelAttribute("author") Author author) {
+
+        if (!author.getFirstName().isEmpty())
+            if  (!author.getLastName().isEmpty())
+                if (!author.getBook().isEmpty()) {
+                    this.authorService.save(author);
+                    return "redirect:../authorTable";
+                }
+        model.addAttribute("errorMessage", errorMessage);
+        return "addAuthor";
     }
 
 }
