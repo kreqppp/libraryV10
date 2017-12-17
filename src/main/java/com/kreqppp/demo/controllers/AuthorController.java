@@ -1,8 +1,11 @@
 package com.kreqppp.demo.controllers;
 
 import com.kreqppp.demo.model.Author;
+import com.kreqppp.demo.service.AuthorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -12,16 +15,19 @@ import java.util.List;
 @Controller
 public class AuthorController {
 
+    @Autowired
+    private AuthorService authorService;
+    /*
     private static List<Author> authors = new ArrayList<>();
 
     static {
         authors.add(new Author("Edgar","Poe", "The Pit and the Pendulum"));
         authors.add(new Author("Taras","Shevchenko","Kobzar"));
-    }
+    }*/
 
     @RequestMapping(value = {"/authorTable"}, method = RequestMethod.GET)
     public String authorTable(Model model){
-        model.addAttribute("authors", authors);
+        model.addAttribute("authors", authorService.getAll());
         return "/authorTable";
     }
 
@@ -30,4 +36,11 @@ public class AuthorController {
         model.addAttribute("author", new Author());
         return "addAuthor";
     }
+
+    @RequestMapping(value = "/addAuthor/submit", method = RequestMethod.POST)
+    public String submitAuthor(@ModelAttribute Author author) {
+        authorService.save(author);
+        return "redirect:../authorTable";
+    }
+
 }

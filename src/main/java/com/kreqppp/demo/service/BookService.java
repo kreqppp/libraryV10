@@ -24,7 +24,12 @@ public class BookService {
         bookDao.save(book);
     }
 
-    public List<Book> getAll() {
-        return (List<Book>) bookDao.findAll();
+    public List<Book> getAll(){
+        return StreamSupport
+                .stream(
+                        Spliterators.spliteratorUnknownSize(bookDao.findAll().iterator(), Spliterator.NONNULL),
+                        false)
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
     }
 }
